@@ -1,0 +1,138 @@
+/* Weekly calendar table – admin kalendar */
+
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-family: var(--font-sans);
+}
+
+.calendar-header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.calendar-header-actions .filters {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.employee-card {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.employee-card:hover {
+  background: var(--bg-color);
+}
+
+.employee-card.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.calendar-wrapper {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  padding: 1rem;
+}
+
+.calendar-wrapper .weekly-calendar-table table {
+  --calendar-border: rgba(255, 255, 255, 0.06);
+}
+
+.calendar-wrapper .weekly-calendar-table td button:disabled {
+  cursor: not-allowed;
+}
+
+/* Mobile calendar responsive */
+@media (max-width: 768px) {
+  .calendar-header-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .calendar-header-actions .filters {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.5rem;
+    flex-wrap: nowrap;
+  }
+
+  .calendar-wrapper {
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Mobile toolbar — only visible on small screens */
+.mobile-toolbar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-toolbar {
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* Header Slot Customizations */
+.header-employees-container {
+  display: flex !important;
+}
+
+@media (max-width: 768px) {
+  .header-employees-container {
+    display: none !important;
+  }
+  
+  .header-actions-container {
+    gap: 0.35rem !important;
+  }
+  
+  .header-action-btn {
+    padding: 0.35rem 0.6rem !important;
+    font-size: 0.7rem !important;
+  }
+
+  .header-selection-container {
+    display: none !important;
+  }
+}
+
+.desktop-only {
+  display: inline;
+}
+
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+  .mobile-only {
+    display: inline;
+  }
+}

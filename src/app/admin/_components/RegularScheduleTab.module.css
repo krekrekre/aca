@@ -1,0 +1,297 @@
+/* Day list and cards */
+.dayList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.dayCard {
+  background: var(--bg-color);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+}
+
+.dayRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.dayLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 140px;
+  flex-shrink: 0;
+  min-height: 36px;
+}
+
+.dayName {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+/* Toggle switch */
+.toggle {
+  position: relative;
+  width: 48px;
+  height: 26px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  padding: 0;
+  cursor: pointer;
+  border-radius: 999px;
+  background: var(--surface);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toggle[data-active="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.toggleKnob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}
+
+.toggle[data-active="true"] .toggleKnob {
+  transform: translateX(22px);
+  background: var(--bg-color);
+}
+
+.periodsAndAdd {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.periods {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  opacity: 1;
+}
+
+.periods.disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.periodRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.actionSlot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  margin-left: 0.25rem;
+}
+
+.periodDash {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.timeSelect {
+  padding: 0.5rem 0.6rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  min-width: 5.5rem;
+  cursor: pointer;
+  appearance: auto;
+}
+
+.timeSelect:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.addPeriodCircleBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent);
+  color: var(--bg-color);
+  font-size: 1.25rem;
+  line-height: 1;
+  font-weight: 300;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.2s,
+    opacity 0.2s;
+}
+
+.addPeriodCircleBtn:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.addPeriodCircleBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.removePeriodBtn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+}
+
+.removePeriodBtn:hover {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.irregularActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+  padding-top: 1rem;
+}
+
+.irregularSaveBtn {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--bg-color);
+  background: var(--accent);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.irregularSaveBtn:hover:not(:disabled) {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.irregularSaveBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.message {
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+.message.success {
+  color: #22c55e;
+}
+
+.message.error {
+  color: #ef4444;
+}
+
+.irregularCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.irregularListTitle {
+  font-size: 1.1rem;
+  font-weight: 500;
+  font-family: var(--font-serif);
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary);
+}
+
+@media (max-width: 480px) {
+  .dayRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .dayRowOff {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .dayRowOff .periodsAndAdd {
+    width: auto;
+    flex: 0;
+  }
+
+  .periodsAndAdd {
+    justify-content: flex-start;
+    align-items: flex-end;
+    width: 100%;
+  }
+
+  .periods {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .periodRow {
+    flex-wrap: nowrap;
+    width: 100%;
+    gap: 0.25rem;
+  }
+
+  .timeSelect {
+    flex: 1;
+    min-width: 0;
+    padding: 0.4rem 0.25rem;
+    font-size: 0.85rem;
+  }
+
+  .irregularActions {
+    width: 100%;
+  }
+
+  .irregularSaveBtn {
+    width: 100%;
+  }
+}

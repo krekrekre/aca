@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id                     String              @id @default(cuid())
+  name                   String
+  email                  String              @unique
+  passwordHash           String
+  phone                  String?
+  role                   String              @default("USER")
+  createdAt              DateTime            @default(now())
+  updatedAt              DateTime            @updatedAt
+  appointmentsAsEmployee Appointment[]       @relation("EmployeeAppointments")
+  appointments           Appointment[]       @relation("UserAppointments")
+  irregularSchedules     IrregularSchedule[]
+  schedules              Schedule[]
+  timeOffs               TimeOff[]
+}
+
+model Service {
+  id            String         @id @default(cuid())
+  title         String
+  description   String?
+  duration      Int
+  price         Float
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  appointments  Appointment[]
+  extraServices ExtraService[]
+}
+
+model ExtraService {
+  id        String  @id @default(cuid())
+  title     String
+  duration  Int     @default(0)
+  price     Float   @default(0)
+  serviceId String
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+}
+
+model Schedule {
+  id         String @id @default(cuid())
+  employeeId String
+  dayOfWeek  Int
+  startTime  String
+  endTime    String
+  employee   User   @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+}
+
+model IrregularSchedule {
+  id         String   @id @default(cuid())
+  employeeId String
+  startDate  DateTime
+  endDate    DateTime
+  startTime  String
+  endTime    String
+  employee   User     @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([startDate, endDate])
+}
+
+model TimeOff {
+  id         String   @id @default(cuid())
+  employeeId String
+  date       DateTime
+  reason     String?
+  employee   User     @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@unique([employeeId, date])
+  @@index([date])
+}
+
+model Settings {
+  id                    String @id @default(cuid())
+  maxBookingAdvanceDays Int    @default(30)
+  appointmentDuration   Int?   @default(30)
+  maxBookingsPerMonth   Int    @default(5)
+}
+
+model Appointment {
+  id         String   @id @default(cuid())
+  userId     String?
+  employeeId String
+  serviceId  String?
+  isPause    Boolean  @default(false)
+  startTime  DateTime
+  endTime    DateTime
+  status     String   @default("CONFIRMED")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  employee   User     @relation("EmployeeAppointments", fields: [employeeId], references: [id], onDelete: Cascade)
+  service       Service? @relation(fields: [serviceId], references: [id])
+  extraServices Json?
+  user          User?    @relation("UserAppointments", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([startTime, endTime])
+  @@index([employeeId, startTime])
+}
