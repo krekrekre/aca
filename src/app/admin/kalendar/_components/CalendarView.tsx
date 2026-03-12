@@ -183,7 +183,7 @@ export default function CalendarView({
         };
 
         const toolbarContent = (
-            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center", width: "100%", justifyContent: "space-between" }}>
+            <div className="header-slot-flex" style={{ display: "flex", gap: "0.5rem", alignItems: "center", width: "100%" }}>
                 {selectionMode === "none" ? (
                     <>
                         <div className="header-employees-container" style={{ gap: "0.35rem", background: "var(--bg-color)", padding: "4px", borderRadius: "12px", border: "1px solid var(--border)" }}>
@@ -234,13 +234,13 @@ export default function CalendarView({
                                 );
                             })}
                         </div>
-                        <div className="header-actions-container" style={{ display: "flex", gap: "0.75rem", marginLeft: "auto" }}>
+                        <div className="header-actions-container" style={{ display: "flex", gap: "0.8rem", marginLeft: "auto", flexShrink: 0 }}>
                             <button
                                 type="button"
                                 className="header-action-btn"
                                 style={{ 
                                     fontSize: "0.85rem", 
-                                    padding: "0.6rem 1.25rem",
+                                    padding: "0.6rem 1.8rem",
                                     background: "rgba(34, 197, 94, 0.1)",
                                     color: "#22c55e",
                                     border: "1px solid rgba(34, 197, 94, 0.3)",
@@ -255,7 +255,7 @@ export default function CalendarView({
                                 onMouseOver={(e) => { e.currentTarget.style.background = "rgba(34, 197, 94, 0.2)"; e.currentTarget.style.borderColor = "rgba(34, 197, 94, 0.6)"; }}
                                 onMouseOut={(e) => { e.currentTarget.style.background = "rgba(34, 197, 94, 0.1)"; e.currentTarget.style.borderColor = "rgba(34, 197, 94, 0.3)"; }}
                             >
-                                <span className="desktop-only">Redovno radno vreme</span>
+                                <span className="desktop-only">Redovno</span>
                                 <span className="mobile-only">redovno</span>
                             </button>
                             <button
@@ -263,7 +263,7 @@ export default function CalendarView({
                                 className="header-action-btn"
                                 style={{ 
                                     fontSize: "0.85rem", 
-                                    padding: "0.6rem 1.25rem",
+                                    padding: "0.6rem 1.8rem",
                                     background: "rgba(212, 175, 55, 0.1)",
                                     color: "#d4af37",
                                     border: "1px solid rgba(212, 175, 55, 0.3)",
@@ -278,7 +278,7 @@ export default function CalendarView({
                                 onMouseOver={(e) => { e.currentTarget.style.background = "rgba(212, 175, 55, 0.2)"; e.currentTarget.style.borderColor = "rgba(212, 175, 55, 0.6)"; }}
                                 onMouseOut={(e) => { e.currentTarget.style.background = "rgba(212, 175, 55, 0.1)"; e.currentTarget.style.borderColor = "rgba(212, 175, 55, 0.3)"; }}
                             >
-                                <span className="desktop-only">+ Dodaj Termin</span>
+                                <span className="desktop-only">+ Termin</span>
                                 <span className="mobile-only">+ termin</span>
                             </button>
                             <button
@@ -286,7 +286,7 @@ export default function CalendarView({
                                 className="header-action-btn"
                                 style={{ 
                                     fontSize: "0.85rem", 
-                                    padding: "0.6rem 1.25rem",
+                                    padding: "0.6rem 1.8rem",
                                     background: "rgba(59, 130, 246, 0.1)",
                                     color: "#60a5fa",
                                     border: "1px solid rgba(59, 130, 246, 0.3)",
@@ -301,7 +301,7 @@ export default function CalendarView({
                                 onMouseOver={(e) => { e.currentTarget.style.background = "rgba(59, 130, 246, 0.2)"; e.currentTarget.style.borderColor = "rgba(59, 130, 246, 0.6)"; }}
                                 onMouseOut={(e) => { e.currentTarget.style.background = "rgba(59, 130, 246, 0.1)"; e.currentTarget.style.borderColor = "rgba(59, 130, 246, 0.3)"; }}
                             >
-                                <span className="desktop-only">Neradni Dani</span>
+                                <span className="desktop-only">Neradni</span>
                                 <span className="mobile-only">neradni</span>
                             </button>
                         </div>

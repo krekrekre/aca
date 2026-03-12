@@ -58,7 +58,7 @@
 }
 
 /* Mobile calendar responsive */
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
   .calendar-header-actions {
     flex-direction: column;
     gap: 0.75rem;
@@ -85,7 +85,7 @@
   display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
   .mobile-toolbar {
     display: block;
     background: var(--surface);
@@ -99,21 +99,32 @@
 /* Header Slot Customizations */
 .header-employees-container {
   display: flex !important;
+  flex-shrink: 0;
 }
 
-@media (max-width: 768px) {
+.header-slot-flex {
+  flex-wrap: nowrap !important;
+}
+
+@media (max-width: 1100px) {
   .header-employees-container {
     display: none !important;
   }
   
   .header-actions-container {
-    gap: 0.15rem !important;
+    gap: 0.2rem !important;
+    margin-left: auto;
   }
   
   .header-action-btn {
-    padding: 0.3rem 0.35rem !important;
-    font-size: 0.6rem !important;
+    padding: 0.4rem 0.55rem !important;
+    font-size: 0.65rem !important;
     letter-spacing: 0 !important;
+    border-radius: 6px !important;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .header-selection-container {
@@ -129,7 +140,7 @@
   display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
   .desktop-only {
     display: none;
   }
