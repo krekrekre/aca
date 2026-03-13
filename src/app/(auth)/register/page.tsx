@@ -91,7 +91,8 @@ export default function RegisterPage() {
                             type="tel"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
-                            placeholder="060 123 4567"
+                            placeholder="0601234567"
+                            maxLength={10}
                         />
                     </div>
 

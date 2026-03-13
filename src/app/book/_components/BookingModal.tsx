@@ -22,11 +22,13 @@ export default function BookingModal({ services }: Props) {
     const [isSuccess, setIsSuccess] = useState(false);
     const [error, setError] = useState("");
 
-    const [showLoginForm, setShowLoginForm] = useState(false);
+    const [authMode, setAuthMode] = useState<"login" | "register" | null>(null);
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
-    const [loginError, setLoginError] = useState("");
-    const [isLoggingIn, setIsLoggingIn] = useState(false);
+    const [registerName, setRegisterName] = useState("");
+    const [registerPhone, setRegisterPhone] = useState("");
+    const [authError, setAuthError] = useState("");
+    const [isAuthLoading, setIsAuthLoading] = useState(false);
 
     const isOpen = !!state.selectedTimeSlot || isSuccess;
 
@@ -72,12 +74,14 @@ export default function BookingModal({ services }: Props) {
         } else {
             setTimeSlot(null);
             setService(null);
-            setShowLoginForm(false);
+            setAuthMode(null);
             setLoginEmail("");
             setLoginPassword("");
+            setRegisterName("");
+            setRegisterPhone("");
         }
         setError("");
-        setLoginError("");
+        setAuthError("");
     };
 
     const processBooking = async () => {
@@ -120,7 +124,7 @@ export default function BookingModal({ services }: Props) {
         }
 
         if (!session) {
-            setShowLoginForm(true);
+            setAuthMode("login");
             return;
         }
 
@@ -129,8 +133,8 @@ export default function BookingModal({ services }: Props) {
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        setIsLoggingIn(true);
-        setLoginError("");
+        setIsAuthLoading(true);
+        setAuthError("");
 
         const res = await signIn("credentials", {
             email: loginEmail,
@@ -139,12 +143,56 @@ export default function BookingModal({ services }: Props) {
         });
 
         if (res?.error) {
-            setLoginError("Pogrešan email ili lozinka.");
-            setIsLoggingIn(false);
+            setAuthError("Pogrešan email ili lozinka.");
+            setIsAuthLoading(false);
         } else {
-            setIsLoggingIn(false);
-            setShowLoginForm(false);
+            setIsAuthLoading(false);
+            setAuthMode(null);
             await processBooking();
+        }
+    };
+
+    const handleRegister = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsAuthLoading(true);
+        setAuthError("");
+
+        try {
+            const res = await fetch("/api/auth/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: registerName,
+                    email: loginEmail,
+                    password: loginPassword,
+                    phone: registerPhone,
+                }),
+            });
+
+            if (!res.ok) {
+                const data = await res.json();
+                throw new Error(data.message || "Greška pri registraciji.");
+            }
+
+            // Auto-login after registration
+            const loginRes = await signIn("credentials", {
+                email: loginEmail,
+                password: loginPassword,
+                redirect: false,
+            });
+
+            if (loginRes?.error) {
+                setAuthError("Nalog je kreiran, ali prijava nije uspela. Molimo pokušajte ručno.");
+                setAuthMode("login");
+                setIsAuthLoading(false);
+            } else {
+                setIsAuthLoading(false);
+                setAuthMode(null);
+                await processBooking();
+            }
+        } catch (err: any) {
+            setAuthError(err.message || "Greška pri registraciji.");
+            setIsAuthLoading(false);
         }
     };
 
@@ -176,12 +224,12 @@ export default function BookingModal({ services }: Props) {
                             Zatvori
                         </button>
                     </div>
-                ) : showLoginForm ? (
+                ) : authMode ? (
                     <>
                         <header className={styles.header}>
                             <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                                <h2 className={styles.title}>Prijava</h2>
-                                <button onClick={() => setShowLoginForm(false)} style={{ fontSize: "0.85rem", textTransform: "uppercase", background: "transparent", color: "var(--text-secondary)", border: "none", cursor: "pointer", textDecoration: "underline" }}>Nazad</button>
+                                <h2 className={styles.title}>{authMode === "login" ? "Prijava" : "Registracija"}</h2>
+                                <button onClick={() => setAuthMode(null)} style={{ fontSize: "0.85rem", textTransform: "uppercase", background: "transparent", color: "var(--text-secondary)", border: "none", cursor: "pointer", textDecoration: "underline" }}>Nazad</button>
                             </div>
                             <button className={styles.closeBtn} onClick={handleClose} aria-label="Zatvori">
                                 <X size={20} />
@@ -189,12 +237,37 @@ export default function BookingModal({ services }: Props) {
                         </header>
                         <div className={styles.body}>
                             <p style={{ color: "var(--text-secondary)", marginBottom: "1.5rem", textAlign: "center" }}>
-                                Prijavite se kako biste potvrdili termin.
+                                {authMode === "login" ? "Prijavite se kako biste potvrdili termin." : "Kreirajte nalog kako biste potvrdili termin."}
                             </p>
                             
-                            {loginError && <div className={styles.error} style={{ marginBottom: "1.5rem" }}>{loginError}</div>}
+                            {authError && <div className={styles.error} style={{ marginBottom: "1.5rem" }}>{authError}</div>}
                             
-                            <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                            <form onSubmit={authMode === "login" ? handleLogin : handleRegister} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                                {authMode === "register" && (
+                                    <>
+                                        <div>
+                                            <label style={{ display: "block", marginBottom: "0.5rem", fontSize: "0.85rem", textTransform: "uppercase", color: "var(--text-secondary)" }}>Ime i Prezime</label>
+                                            <input
+                                                type="text"
+                                                value={registerName}
+                                                onChange={(e) => setRegisterName(e.target.value)}
+                                                required
+                                                placeholder="Petar Petrović"
+                                                style={{ width: "100%", padding: "0.80rem 1rem", background: "rgba(0,0,0,0.2)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", color: "var(--text-primary)", fontFamily: "var(--font-sans)" }}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label style={{ display: "block", marginBottom: "0.5rem", fontSize: "0.85rem", textTransform: "uppercase", color: "var(--text-secondary)" }}>Broj Telefona (opciono)</label>
+                                            <input
+                                                type="tel"
+                                                value={registerPhone}
+                                                onChange={(e) => setRegisterPhone(e.target.value)}
+                                                maxLength={10}
+                                                style={{ width: "100%", padding: "0.80rem 1rem", background: "rgba(0,0,0,0.2)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", color: "var(--text-primary)", fontFamily: "var(--font-sans)" }}
+                                            />
+                                        </div>
+                                    </>
+                                )}
                                 <div>
                                     <label style={{ display: "block", marginBottom: "0.5rem", fontSize: "0.85rem", textTransform: "uppercase", color: "var(--text-secondary)" }}>Email adresa</label>
                                     <input
@@ -217,13 +290,21 @@ export default function BookingModal({ services }: Props) {
                                         style={{ width: "100%", padding: "0.8rem 1rem", background: "rgba(0,0,0,0.2)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", color: "var(--text-primary)", fontFamily: "var(--font-sans)" }}
                                     />
                                 </div>
-                                <button type="submit" className={styles.confirmBtn} disabled={isLoggingIn}>
-                                    {isLoggingIn ? "Prijava..." : "Prijavi se i zakaži"}
+                                <button type="submit" className={styles.confirmBtn} disabled={isAuthLoading}>
+                                    {isAuthLoading ? "Obrada..." : authMode === "login" ? "Prijavi se i zakaži" : "Registruj se i zakaži"}
                                 </button>
                             </form>
                             
                             <div style={{ marginTop: "2rem", textAlign: "center", fontSize: "0.9rem", color: "var(--text-secondary)" }}>
-                                Nemate nalog? <a href="/register" style={{ color: "var(--accent)", textDecoration: "underline" }}>Registrujte se</a>
+                                {authMode === "login" ? (
+                                    <>
+                                        Nemate nalog? <button onClick={() => {setAuthMode("register"); setAuthError("");}} style={{ background: "transparent", border: "none", padding: 0, color: "var(--accent)", textDecoration: "underline", cursor: "pointer", fontSize: "inherit" }}>Registrujte se</button>
+                                    </>
+                                ) : (
+                                    <>
+                                        Već imate nalog? <button onClick={() => {setAuthMode("login"); setAuthError("");}} style={{ background: "transparent", border: "none", padding: 0, color: "var(--accent)", textDecoration: "underline", cursor: "pointer", fontSize: "inherit" }}>Prijavite se</button>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </>
