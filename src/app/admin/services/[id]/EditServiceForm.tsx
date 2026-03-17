@@ -63,12 +63,17 @@ export default function EditServiceForm({ service }: { service: Service & { extr
             defaultValue={service.title}
             style={{
               width: "100%",
-              padding: "0.75rem",
+              padding: "0.85rem 1rem",
               borderRadius: "var(--radius-md)",
-              border: "1px solid var(--border)",
-              background: "var(--bg-color)",
+              border: "1px solid var(--border-light)",
+              background: "var(--surface-hover)",
               color: "var(--text-primary)",
+              transition: "var(--transition)",
+              outline: "none",
+              fontSize: "0.95rem",
             }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = "var(--accent)"; e.currentTarget.style.boxShadow = "var(--shadow-sm)"; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = "var(--border-light)"; e.currentTarget.style.boxShadow = "none"; }}
           />
         </div>
 
@@ -82,13 +87,18 @@ export default function EditServiceForm({ service }: { service: Service & { extr
             defaultValue={service.description || ""}
             style={{
               width: "100%",
-              padding: "0.75rem",
+              padding: "0.85rem 1rem",
               borderRadius: "var(--radius-md)",
-              border: "1px solid var(--border)",
-              background: "var(--bg-color)",
+              border: "1px solid var(--border-light)",
+              background: "var(--surface-hover)",
               color: "var(--text-primary)",
               resize: "vertical",
+              transition: "var(--transition)",
+              outline: "none",
+              fontSize: "0.95rem",
             }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = "var(--accent)"; e.currentTarget.style.boxShadow = "var(--shadow-sm)"; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = "var(--border-light)"; e.currentTarget.style.boxShadow = "none"; }}
           />
         </div>
 
@@ -112,12 +122,17 @@ export default function EditServiceForm({ service }: { service: Service & { extr
               defaultValue={service.duration}
               style={{
                 width: "100%",
-                padding: "0.75rem",
+                padding: "0.85rem 1rem",
                 borderRadius: "var(--radius-md)",
-                border: "1px solid var(--border)",
-                background: "var(--bg-color)",
+                border: "1px solid var(--border-light)",
+                background: "var(--surface-hover)",
                 color: "var(--text-primary)",
+                transition: "var(--transition)",
+                outline: "none",
+                fontSize: "0.95rem",
               }}
+              onFocus={(e) => { e.currentTarget.style.borderColor = "var(--accent)"; e.currentTarget.style.boxShadow = "var(--shadow-sm)"; }}
+              onBlur={(e) => { e.currentTarget.style.borderColor = "var(--border-light)"; e.currentTarget.style.boxShadow = "none"; }}
             />
           </div>
           <div>
@@ -133,17 +148,22 @@ export default function EditServiceForm({ service }: { service: Service & { extr
               defaultValue={service.price}
               style={{
                 width: "100%",
-                padding: "0.75rem",
+                padding: "0.85rem 1rem",
                 borderRadius: "var(--radius-md)",
-                border: "1px solid var(--border)",
-                background: "var(--bg-color)",
+                border: "1px solid var(--border-light)",
+                background: "var(--surface-hover)",
                 color: "var(--text-primary)",
+                transition: "var(--transition)",
+                outline: "none",
+                fontSize: "0.95rem",
               }}
+              onFocus={(e) => { e.currentTarget.style.borderColor = "var(--accent)"; e.currentTarget.style.boxShadow = "var(--shadow-sm)"; }}
+              onBlur={(e) => { e.currentTarget.style.borderColor = "var(--border-light)"; e.currentTarget.style.boxShadow = "none"; }}
             />
           </div>
         </div>
 
-        <div style={{ marginTop: "1.5rem", borderTop: "1px solid var(--border)", paddingTop: "1.5rem" }}>
+        <div style={{ marginTop: "1rem", borderTop: "1px solid var(--border-light)", paddingTop: "1rem" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
             <h3 style={{ margin: 0, fontSize: "1.1rem" }}>Dodatne usluge (opciono)</h3>
             <button 
@@ -163,38 +183,38 @@ export default function EditServiceForm({ service }: { service: Service & { extr
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 {extras.map((extra, index) => (
-                    <div key={extra.id} style={{ display: "grid", gridTemplateColumns: "1fr 80px 100px 40px", gap: "0.75rem", alignItems: "end", background: "rgba(255,255,255,0.02)", padding: "0.75rem", borderRadius: "var(--radius-md)", border: "1px solid var(--border)" }}>
+                    <div key={extra.id} style={{ display: "grid", gridTemplateColumns: "1fr 80px 100px 40px", gap: "0.75rem", alignItems: "end", background: "rgba(255,255,255,0.02)", padding: "0.75rem", borderRadius: "var(--radius-md)", border: "1px solid var(--border-light)" }}>
                         <div>
                             <label style={{ fontSize: "0.75rem", color: "var(--text-secondary)", display: "block", marginBottom: "0.25rem" }}>Naziv</label>
-                            <input 
+                            <input
                                 name={`extraTitle_${index}`}
                                 value={extra.title}
                                 onChange={(e) => updateExtra(extra.id, "title", e.target.value)}
                                 required
                                 placeholder="Npr. Pranje kose"
-                                style={{ width: "100%", padding: "0.5rem", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)", background: "var(--bg-color)", color: "var(--text-primary)", fontSize: "0.9rem" }}
+                                style={{ width: "100%", padding: "0.5rem", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-light)", background: "var(--surface)", color: "var(--text-primary)", fontSize: "0.9rem" }}
                             />
                         </div>
                         <div>
                             <label style={{ fontSize: "0.75rem", color: "var(--text-secondary)", display: "block", marginBottom: "0.25rem" }}>Min</label>
-                            <input 
+                            <input
                                 name={`extraDuration_${index}`}
                                 type="number"
                                 value={extra.duration}
                                 onChange={(e) => updateExtra(extra.id, "duration", parseInt(e.target.value) || 0)}
                                 required
-                                style={{ width: "100%", padding: "0.5rem", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)", background: "var(--bg-color)", color: "var(--text-primary)", fontSize: "0.9rem" }}
+                                style={{ width: "100%", padding: "0.5rem", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-light)", background: "var(--surface)", color: "var(--text-primary)", fontSize: "0.9rem" }}
                             />
                         </div>
                         <div>
                             <label style={{ fontSize: "0.75rem", color: "var(--text-secondary)", display: "block", marginBottom: "0.25rem" }}>Cena</label>
-                            <input 
+                            <input
                                 name={`extraPrice_${index}`}
                                 type="number"
                                 value={extra.price}
                                 onChange={(e) => updateExtra(extra.id, "price", parseFloat(e.target.value) || 0)}
                                 required
-                                style={{ width: "100%", padding: "0.5rem", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)", background: "var(--bg-color)", color: "var(--text-primary)", fontSize: "0.9rem" }}
+                                style={{ width: "100%", padding: "0.5rem", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-light)", background: "var(--surface)", color: "var(--text-primary)", fontSize: "0.9rem" }}
                             />
                         </div>
                         <button 
